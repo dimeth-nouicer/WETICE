@@ -1,0 +1,50 @@
+h1 #{title}
+form(method='POST' , action="/")
+    
+    //script(src='/js/bleScript.js')
+    #form-group
+        label Device Name:
+        input.form-control(name='name', type='text', id='name') 
+    #form-group
+        label Owner:
+        input.form-control(name='owner', type='text', id='owner')
+    #form-group
+        label Email:
+        input.form-control(name='email', type='text')
+    #form-group
+        label OS type:
+        input.form-control(name='osType', type='text')
+    br
+    //input.btn.btn-primary(type="submit",value='Submit', name="save")
+    button Connect with BLE devices
+    script. 
+        function isWebBLEAvailable(){
+            if (!navigator.bluetooth){
+                console.log('errrr');
+                return false
+            }
+            return true
+        }
+
+        function getDeviceInfo(){
+            let options = {
+                acceptAllDevices: true
+            }
+
+            console.log('requesting BLE devices info..')
+            navigator.bluetooth.requestDevice(options).then(device => {
+                console.log('Name:' + device.name)
+            }).catch(error => {
+                console.log('request device error: ' + error)
+            })
+        }
+
+        document.querySelector('form').addEventListener('submit', 
+        function(event) {
+            event.stopPropagation()
+            event.preventDefault()
+
+            if(isWebBLEAvailable()) {
+                getDeviceInfo()
+            }
+        } )
