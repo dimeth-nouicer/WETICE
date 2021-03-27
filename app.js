@@ -17,20 +17,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/hello', function (req, res) {
+  let migration = "";
   http
   .get("http://localhost:8080/reasoning", (resp) => {
     let data = "";
     // A chunk of data has been recieved. Append it with the previously retrieved chunk of data
     resp.on("data", (chunk) => {
-      
       data += chunk;
     });
     // when the whole response is received, parse the result and Print it in the console
-    resp.on("end", () => {console.log(data);});
+    resp.on("end", () => {
+      migration = data.split("[")[1].split("]")[0];
+     //console.log(data.split("[")[1].split("]")[0]);});
+      console.log(migration);
+      res.render('ble', {
+        result: migration
+      })
+    });
   })
   .on("error", (err) => {console.log("Error: " + err.message);
   });
-
+ 
 });
 
 /*app.get('/get-file', function (req, res) {

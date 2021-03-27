@@ -28,3 +28,18 @@ function(event) {
         getDeviceInfo()
     }
 } )
+
+ function getDeviceInfo(){
+    let options = {
+        acceptAllDevices: true
+    }
+
+    console.log('requesting BLE devices info..')
+    navigator.bluetooth.requestDevice(options, { filters: [{ services: ['battery_service'] }] })
+    .then(device => {
+        console.log('Name:' + device.name)
+    })
+    .catch(error => {
+        console.log('request device error: ' + error)
+    })
+}
